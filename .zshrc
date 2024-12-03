@@ -28,12 +28,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
 zstyle ':omz:update' frequency 13
@@ -89,11 +89,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -105,17 +105,10 @@ source $ZSH/oh-my-zsh.sh
 #
 # General aliases
 alias c="clear"
-alias ct="clear; tree"
-alias pro="cd /Users/nickschaller/Documents/Projects"
-alias pwdc="pwd | pbcopy"
-# ETH aliases
-alias eth="cd /Users/nickschaller/Documents/ETHZ/RW-5"
-alias rack="cd /Users/nickschaller/Documents/ETHZ/RACKlette"
-alias mic="cd /Users/nickschaller/Documents/ETHZ/RW-5/Microeconomics"
-alias dp="cd /Users/nickschaller/Documents/ETHZ/RW-5/DPHPC"
-alias ni="/Users/nickschaller/Documents/ETHZ/RW-5/NeuroInformatics"
-alias csb="/Users/nickschaller/Documents/ETHZ/RW-5/CSB"
-alias se="/Users/nickschaller/Documents/ETHZ/RW-5/SoftwareEngineering"
+# Link system aliases
+if [ -f $HOME/.aliases ]; then
+  source $HOME/.aliases
+fi
 
 # Add environment variables
 export PYENV_ROOT="$HOME/.pyenv"

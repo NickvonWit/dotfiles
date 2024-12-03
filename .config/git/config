@@ -1,0 +1,13 @@
+[alias]
+	d = "diff"
+	s = "status"
+
+[core]
+	editor = "nvim"
+
+[init]
+	defaultBranch = "main"
+
+[user]
+	email = "nschaller@student.ethz.ch"
+	name = "nschaller"
