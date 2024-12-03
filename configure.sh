@@ -155,6 +155,7 @@ if [ -z "$(command -v fzf)" ]; then
   elif [ "$OS" == "linux" ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
+  fi
 fi
 #_____________________ Git Configuration _____________________
 
