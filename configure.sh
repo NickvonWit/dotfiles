@@ -45,7 +45,20 @@ fi
 # Check if zsh is installed
 if [ -z "$(command -v zsh)" ]; then
   echo "Zsh is not installed. Please install zsh first."
-  exit 1
+  echo "For Mac, run 'brew install zsh'"
+  echo "For Linux, run 'sudo apt install zsh'"
+  echo "If you do not have sudo privileges, I can install zsh for you."
+  read -p "Do you want to install zsh? [y/n]: " install_zsh
+  if [ "$install_zsh" == "y" ]; then
+    wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
+    mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
+    cd zsh
+    ./configure --prefix=$HOME/.local
+    make && make install
+  else
+    echo "Exiting script..."
+    exit 1
+  fi
 fi
 if [ ! -f "$HOME/.zshrc" ]; then
   touch $HOME/.zshrc
@@ -54,15 +67,40 @@ else
   mv $HOME/.zshrc $backup_folder/.zshrc.bak
   touch $HOME/.zshrc
 fi
-ln -sf $(pwd)/.zshrc $HOME/.zshrc
+ln -sf $script_dir/.zshrc $HOME/.zshrc
 
  # Set zsh as the default shell if it is not already
-if [ "$SHELL" != "$(which zsh)" ]; then
-  echo "Setting zsh as the default shell..."
-  chsh -s $(which zsh)
+if command -v chsh >/dev/null 2>&1; then
+    if chsh -l 2>/dev/null | grep -q "$(which zsh)"; then
+        if [ "$SHELL" != "$(which zsh)" ]; then
+            echo "zsh is available in chsh. Do you have sudo access to change shell? (y/n)"
+            read answer
+            if [ "$answer" = "y" ]; then
+                echo "Setting zsh as the default shell..."
+                chsh -s "$(which zsh)"
+            else
+                echo "No sudo access. Proceeding with alternative method..."
+                mv $HOME/.bashrc $backup_folder/.bashrc.bak
+                touch $HOME/.bashrc
+                ln -sf $script_dir/cluster/.bashrc $HOME/.bashrc
+            fi
+        else
+            echo "zsh is already the default shell."
+        fi
+    else
+        echo "zsh is not in allowed shells list. Proceeding with alternative method..."
+        mv $HOME/.bashrc $backup_folder/.bashrc.bak
+        touch $HOME/.bashrc
+        ln -sf $script_dir/cluster/.bashrc $HOME/.bashrc
+
+    fi
 else
-  echo "zsh is already the default shell."
+    echo "chsh command not available. Proceeding with alternative method..."
+    mv $HOME/.bashrc $backup_folder/.bashrc.bak
+    touch $HOME/.bashrc
+    ln -sf $script_dir/cluster/.bashrc $HOME/.bashrc
 fi
+
 
 echo "Zsh configuration complete. For system specific aliases, create a .aliases file in home."
 
@@ -92,7 +130,7 @@ else
   mv $HOME/.p10k.zsh $backup_folder/.p10k.zsh.bak
   touch $HOME/.p10k.zsh
 fi
-ln -sf $(pwd)/.p10k.zsh $HOME/.p10k.zsh
+ln -sf $script_dir/.p10k.zsh $HOME/.p10k.zsh
 
 # Check if zsh-syntax-highlighting is installed
 zsh_syntax="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
@@ -140,6 +178,6 @@ else
   mv $HOME/.config/git/config $backup_folder/gitconfig.bak
   touch $HOME/.config/git/config
 fi
-ln -sf $(pwd)/.gitconfig $HOME/.config/git/config
+ln -sf $script_dir/.gitconfig $HOME/.config/git/config
 
 #_____________________ Vim Configuration _____________________
