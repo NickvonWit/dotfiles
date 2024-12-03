@@ -108,6 +108,8 @@ omz="$HOME/.oh-my-zsh"
 if [ ! -d "$omz" ]; then
   echo "Installing oh-my-zsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  rm $HOME/.zshrc.pre-oh-my-zsh
+  ln -sf $script_dir/.zshrc $HOME/.zshrc
 else
   echo "oh-my-zsh is already installed."
 fi
