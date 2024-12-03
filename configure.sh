@@ -82,6 +82,7 @@ if [ "$SHELL" != "$(which zsh)" ]; then
       ln -sf $script_dir/cluster/.bash_profile $HOME/.bash_profile
     else
       echo "Exiting script..."
+    fi
     exit 1
   fi
   chsh -s $(which zsh)
