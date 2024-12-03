@@ -1,6 +1,10 @@
 #!/bin/bash
 
 #_____________________ Variables _____________________
+
+# Find location of the script
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 # Check if the script is being run as root
 if [ "$EUID" -eq 0 ]; then
   echo "Please do not run as root."
@@ -19,7 +23,7 @@ else
 fi
 
 # Backup folder
-backup_folder="$HOME/.dotfiles/.dotfiles_backup"
+backup_folder="$script_dir/.dotfiles_backup"
 if [ ! -d "$backup_folder" ]; then
   echo "Creating backup folder..."
   mkdir -p $backup_folder
@@ -34,6 +38,7 @@ if [ "$OS" == "mac" ]; then
   else
     echo "Homebrew is already installed."
   fi
+fi
 
 #_____________________ ZSH Configuration _____________________
 
