@@ -67,7 +67,7 @@ else
   mv $HOME/.zshrc $backup_folder/.zshrc.bak
   touch $HOME/.zshrc
 fi
-ln -sf $(pwd)/.zshrc $HOME/.zshrc
+ln -sf $script_dir/.zshrc $HOME/.zshrc
 
  # Set zsh as the default shell if it is not already
 if [ "$SHELL" != "$(which zsh)" ]; then
@@ -118,7 +118,7 @@ else
   mv $HOME/.p10k.zsh $backup_folder/.p10k.zsh.bak
   touch $HOME/.p10k.zsh
 fi
-ln -sf $(pwd)/.p10k.zsh $HOME/.p10k.zsh
+ln -sf $script_dir/.p10k.zsh $HOME/.p10k.zsh
 
 # Check if zsh-syntax-highlighting is installed
 zsh_syntax="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
@@ -166,6 +166,15 @@ else
   mv $HOME/.config/git/config $backup_folder/gitconfig.bak
   touch $HOME/.config/git/config
 fi
-ln -sf $(pwd)/.gitconfig $HOME/.config/git/config
+ln -sf $script_dir/.gitconfig $HOME/.config/git/config
 
 #_____________________ Vim Configuration _____________________
+
+# Check if vim is installed
+if [ -z "$(command -v vim)" ]; then
+  echo "Vim is not installed. Please install vim first."
+  exit 1
+else
+  mv $HOME/.vimrc $backup_folder/.vimrc.bak
+  touch $HOME/.vimrc
+  ln -sf $script_dir/.vimrc $HOME/.vimrc
