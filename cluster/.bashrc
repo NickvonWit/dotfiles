@@ -1,4 +1,9 @@
 # ~/.bashrc
 
 # Execute zsh shell
-exec zsh
+if [[ -x "$HOME/.local/bin/zsh" ]]; then
+    export SHELL="$HOME/.local/bin/zsh"
+    exec "$HOME/.local/bin/zsh"
+else 
+    exec zsh
+fi
