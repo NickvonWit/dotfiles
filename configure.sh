@@ -48,7 +48,7 @@ if [ -z "$(command -v zsh)" ]; then
   echo "For Mac, run 'brew install zsh'"
   echo "For Linux, run 'sudo apt install zsh'"
   echo "If you do not have sudo privileges, I can install zsh for you."
-  read -p "Do you want to install zsh? [y/n]: " install_zsh
+  read -p "Do you want to install zsh the scuffed way? [y/n]: " install_zsh
   if [ "$install_zsh" == "y" ]; then
     wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
     mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
@@ -74,6 +74,14 @@ if [ "$SHELL" != "$(which zsh)" ]; then
   echo "Setting zsh as the default shell..."
   if ! chsh -l | grep -q "$(which zsh)"; then
     echo "zsh is not listed in chsh -l. Please add it manually."
+    echo "If I previously installed zsh for you, I can add it for you."
+    read -p "Do you want to default zsh the scuffed way? [y/n]: " add_zsh
+    if [ "$add_zsh" == "y" ]; then
+      mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
+      touch $HOME/.bash_profile
+      ln -sf $script_dir/cluster/.bash_profile $HOME/.bash_profile
+    else
+      echo "Exiting script..."
     exit 1
   fi
   chsh -s $(which zsh)
