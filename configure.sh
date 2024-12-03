@@ -55,7 +55,9 @@ if [ -z "$(command -v zsh)" ]; then
     cd zsh
     ./configure --prefix=$HOME/.local
     make && make install
-    export PATH="$HOME/.local/bin:$PATH"
+    rm -rf zsh.tar zsh
+    touch $HOME/.aliases
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.aliases
   else
     echo "Exiting script..."
     exit 1
