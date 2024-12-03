@@ -85,7 +85,16 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     fi
     exit 1
   fi
-  chsh -s $(which zsh)
+  # Check if user has sudo privileges
+  echo "If you do not have sudo privileges, I can add zsh for you."
+  read -p "Do you want to default zsh the scuffed way? [y/n]: " default_zsh
+  if [ "$default_zsh" == "y" ]; then
+    mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
+    touch $HOME/.bash_profile
+    ln -sf $script_dir/cluster/.bash_profile $HOME/.bash_profile
+  else
+    chsh -s $(which zsh)
+  fi
 else
   echo "zsh is already the default shell."
 fi
