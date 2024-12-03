@@ -165,6 +165,7 @@ elif [ "$OS" == "linux" ]; then
     echo "Installing fzf..."
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
+    echo "source $HOME/.fzf.zsh" >> $HOME/.aliases
   else
     echo "fzf is already installed."
   fi
