@@ -107,7 +107,7 @@ echo "Zsh configuration complete. For system specific aliases, create a .aliases
 omz="$HOME/.oh-my-zsh"
 if [ ! -d "$omz" ]; then
   echo "Installing oh-my-zsh..."
-  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
   echo "oh-my-zsh is already installed."
 fi
