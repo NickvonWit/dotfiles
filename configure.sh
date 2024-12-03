@@ -55,6 +55,7 @@ if [ -z "$(command -v zsh)" ]; then
     cd zsh
     ./configure --prefix=$HOME/.local
     make && make install
+    export PATH="$HOME/.local/bin:$PATH"
   else
     echo "Exiting script..."
     exit 1
