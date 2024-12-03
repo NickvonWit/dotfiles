@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS Finder
+Icon?
+._*
+
+# macOS Quick Look
+*.qlgenerator
+
+# macOS Spotlight
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Backup directory
+.dotfiles_backup

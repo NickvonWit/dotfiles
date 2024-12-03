@@ -112,7 +112,15 @@ else
  echo "zs-autosuggestions is already installed."
 fi
 
-
+# Check if fzf is installed
+if [ -z "$(command -v fzf)" ]; then
+  echo "Installing fzf..."
+  if [ "$OS" == "mac" ]; then
+    brew install fzf
+  elif [ "$OS" == "linux" ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+fi
 #_____________________ Git Configuration _____________________
 
 # Check if git is installed
