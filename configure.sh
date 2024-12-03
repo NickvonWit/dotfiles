@@ -178,3 +178,4 @@ else
   mv $HOME/.vimrc $backup_folder/.vimrc.bak
   touch $HOME/.vimrc
   ln -sf $script_dir/.vimrc $HOME/.vimrc
+fi
