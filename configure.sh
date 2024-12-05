@@ -3,7 +3,7 @@
 #_____________________ Variables _____________________
 
 # Find location of the script
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Check if the script is being run as root
 if [ "$EUID" -eq 0 ]; then
@@ -23,7 +23,7 @@ else
 fi
 
 # Backup folder
-backup_folder="$script_dir/.dotfiles_backup"
+backup_folder="$SCRIPT_DIR/.dotfiles_backup"
 if [ ! -d "$backup_folder" ]; then
   echo "Creating backup folder..."
   mkdir -p $backup_folder
@@ -45,24 +45,38 @@ fi
 # Check if zsh is installed
 if [ -z "$(command -v zsh)" ]; then
   echo "Zsh is not installed. Please install zsh first."
-  echo "For Mac, run 'brew install zsh'"
-  echo "For Linux, run 'sudo apt install zsh'"
-  echo "If you do not have sudo privileges, I can install zsh for you."
-  read -p "Do you want to install zsh the scuffed way? [y/n]: " install_zsh
-  if [ "$install_zsh" == "y" ]; then
-    wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
-    mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
-    cd zsh
-    ./configure --prefix=$HOME/.local
-    make && make install
-    rm -rf zsh.tar zsh
-    touch $HOME/.aliases
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.aliases
-  else
+  if [ "$OS" == "mac" ]; then
+    echo "Haha, zsh should be installed. I am very sorry for your Mac."
+    echo "Figure out why you do not have zsh and then run this script again."
     echo "Exiting script..."
     exit 1
+  elif [ "$OS" == "linux" ]; then
+    echo "For Linux, run 'sudo apt install zsh'"
+    echo "If you however do not have sudo privileges, I can install zsh for you."
+    read -p "Do you want to install zsh with sudo or using .local and linking? [s/l]: " install_zsh
+    if [ "$install_zsh" == "s" ]; then
+      sudo apt install zsh
+    elif [ "$install_zsh" == "l" ]; then
+      wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
+      mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
+      cd zsh
+      mkdir -p $SCRIPT_DIR/.local
+      ./configure --prefix=$SCRIPT_DIR/.local
+      make && make install
+      cd ..
+      rm -rf zsh.tar zsh
+      mkdir -p $HOME/.local/bin
+      ln -sf $SCRIPT_DIR/.local/bin/zsh $HOME/.local/bin/zsh
+      touch $HOME/.aliases
+      # Check if this is already in the .aliases file
+      if ! grep -q "export PATH=\"\$HOME/.local/bin:\$PATH\"" $HOME/.aliases; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.aliases
+      fi
+    fi
   fi
 fi
+
+# Handle .zshrc file
 if [ ! -f "$HOME/.zshrc" ]; then
   touch $HOME/.zshrc
 else 
@@ -70,7 +84,7 @@ else
   mv $HOME/.zshrc $backup_folder/.zshrc.bak
   touch $HOME/.zshrc
 fi
-ln -sf $script_dir/.zshrc $HOME/.zshrc
+ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
 
  # Set zsh as the default shell if it is not already
 if [ "$SHELL" != "$(which zsh)" ]; then
@@ -82,7 +96,7 @@ if [ "$SHELL" != "$(which zsh)" ]; then
     if [ "$add_zsh" == "y" ]; then
       mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
       touch $HOME/.bash_profile
-      ln -sf $script_dir/cluster/.bash_profile $HOME/.bash_profile
+      ln -sf $SCRIPT_DIR/cluster/.bash_profile $HOME/.bash_profile
     else
       echo "Exiting script..."
     fi
@@ -94,7 +108,7 @@ if [ "$SHELL" != "$(which zsh)" ]; then
   if [ "$default_zsh" == "y" ]; then
     mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
     touch $HOME/.bash_profile
-    ln -sf $script_dir/cluster/.bash_profile $HOME/.bash_profile
+    ln -sf $SCRIPT_DIR/cluster/.bash_profile $HOME/.bash_profile
   else
     chsh -s $(which zsh)
   fi
@@ -110,9 +124,9 @@ echo "Zsh configuration complete. For system specific aliases, create a .aliases
 omz="$HOME/.oh-my-zsh"
 if [ ! -d "$omz" ]; then
   echo "Installing oh-my-zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  rm $HOME/.zshrc.pre-oh-my-zsh
-  ln -sf $script_dir/.zshrc $HOME/.zshrc
+  wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+  CHSH=no RUNZSH=no KEEP_ZSHRC=yes sh install.sh
+  rm install.sh
 else
   echo "oh-my-zsh is already installed."
 fi
@@ -132,7 +146,7 @@ else
   mv $HOME/.p10k.zsh $backup_folder/.p10k.zsh.bak
   touch $HOME/.p10k.zsh
 fi
-ln -sf $script_dir/.p10k.zsh $HOME/.p10k.zsh
+ln -sf $SCRIPT_DIR/.p10k.zsh $HOME/.p10k.zsh
 
 # Check if zsh-syntax-highlighting is installed
 zsh_syntax="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
@@ -189,7 +203,7 @@ else
   mv $HOME/.config/git/config $backup_folder/gitconfig.bak
   touch $HOME/.config/git/config
 fi
-ln -sf $script_dir/.gitconfig $HOME/.config/git/config
+ln -sf $SCRIPT_DIR/.gitconfig $HOME/.config/git/config
 
 #_____________________ Vim Configuration _____________________
 
@@ -200,5 +214,5 @@ if [ -z "$(command -v vim)" ]; then
 else
   mv $HOME/.vimrc $backup_folder/.vimrc.bak
   touch $HOME/.vimrc
-  ln -sf $script_dir/.vimrc $HOME/.vimrc
+  ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
 fi
