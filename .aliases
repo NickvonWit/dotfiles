@@ -1,4 +1,5 @@
-# ETH aliases
+# ETH aliases 
+
 alias eth="cd /Users/nickschaller/Documents/ETHZ/RW-5"
 alias rack="cd /Users/nickschaller/Documents/ETHZ/RACKlette"
 alias mic="cd /Users/nickschaller/Documents/ETHZ/RW-5/Microeconomics"
@@ -8,9 +9,14 @@ alias csb="/Users/nickschaller/Documents/ETHZ/RW-5/CSB"
 alias se="/Users/nickschaller/Documents/ETHZ/RW-5/SoftwareEngineering"
 
 # General aliases
+
 alias ct="clear; tree"
 alias pro="cd /Users/nickschaller/Documents/Projects"
 alias pwdc="pwd | pbcopy"
 
 # RACKlette aliases
+
 alias sc="cd /scratch/nschalle/"
+# Source modules
+source /etc/profile.d/modules.sh
+ml slurm
