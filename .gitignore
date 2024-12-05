@@ -19,3 +19,6 @@ Temporary Items
 
 # Backup directory
 .dotfiles_backup
+
+# Git
+.gitconfig
