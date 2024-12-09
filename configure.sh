@@ -203,7 +203,7 @@ else
   mv $HOME/.config/git/config $backup_folder/gitconfig.bak
   touch $HOME/.config/git/config
 fi
-ln -sf $SCRIPT_DIR/.gitconfig $HOME/.config/git/config
+ln -sf $SCRIPT_DIR/.config/git/config $HOME/.config/git/config
 
 #_____________________ Vim Configuration _____________________
 
