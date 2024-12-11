@@ -87,7 +87,7 @@ fi
 ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
 
  # Set zsh as the default shell if it is not already
-if [ "$SHELL" != "$(which zsh)" ]; then
+if [ "${SHELL: -3}" != "zsh" ]; then
   echo "Setting zsh as the default shell..."
   if ! chsh -l | grep -q "$(which zsh)"; then
     echo "zsh is not listed in chsh -l. Please add it manually."
@@ -112,6 +112,7 @@ if [ "$SHELL" != "$(which zsh)" ]; then
   else
     chsh -s $(which zsh)
   fi
+fi
 else
   echo "zsh is already the default shell."
 fi
