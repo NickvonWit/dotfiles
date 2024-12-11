@@ -204,3 +204,5 @@ else
   fi
   ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
 fi
+
+exec zsh
