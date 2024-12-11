@@ -77,7 +77,7 @@ zstyle ':omz:update' frequency 13
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git gitignore macos zsh-interactive-cd colored-man-pages extract zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git gitignore macos colored-man-pages extract zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
