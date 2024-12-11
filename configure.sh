@@ -112,7 +112,6 @@ if [ "${SHELL: -3}" != "zsh" ]; then
   else
     chsh -s $(which zsh)
   fi
-fi
 else
   echo "zsh is already the default shell."
 fi
