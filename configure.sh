@@ -166,24 +166,6 @@ else
  echo "zs-autosuggestions is already installed."
 fi
 
-# Check if fzf is installed
-if [ "$OS" == "mac" ]; then
-  if [ -z "$(command -v fzf)" ]; then
-    echo "Installing fzf..."
-    brew install fzf
-  else
-    echo "fzf is already installed."
-  fi
-elif [ "$OS" == "linux" ]; then
-  if [ ! -d "$HOME/.fzf" ]; then
-    echo "Installing fzf..."
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
-    echo "source $HOME/.fzf.zsh" >> $HOME/.aliases
-  else
-    echo "fzf is already installed."
-  fi
-fi
 #_____________________ Git Configuration _____________________
 
 # Check if git is installed
@@ -212,7 +194,13 @@ if [ -z "$(command -v vim)" ]; then
   echo "Vim is not installed. Please install vim first."
   exit 1
 else
-  mv $HOME/.vimrc $backup_folder/.vimrc.bak
-  touch $HOME/.vimrc
+  # Check if there is a .vimrc file
+  if [ ! -f "$HOME/.vimrc" ]; then
+    touch $HOME/.vimrc
+  else
+    echo "Backing up existing .vimrc file..."
+    mv $HOME/.vimrc $backup_folder/.vimrc.bak
+    touch $HOME/.vimrc
+  fi
   ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
 fi
