@@ -35,8 +35,12 @@ if [ "$OS" == "mac" ]; then
   if [ -z "$(command -v brew)" ]; then
     echo "Homebrew is not installed. Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo "Installing wget..."
+    brew install wget
   else
     echo "Homebrew is already installed."
+    echo "Installing wget..."
+    brew install wget
   fi
 fi
 
