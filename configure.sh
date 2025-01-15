@@ -17,6 +17,20 @@ if  [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   echo "Linux OS detected."
   export OS="linux"
+  # Check which package manager is being used
+  if [ -n "$(command -v apt)" ]; then
+    echo "Using apt package manager."
+    export PKG_MANAGER="apt"
+  elif [ -n "$(command -v yum)" ]; then
+    echo "Using yum package manager."
+    export PKG_MANAGER="yum"
+  elif [ -n "$(command -v dnf)" ]; then
+    echo "Using dnf package manager."
+    export PKG_MANAGER="dnf"
+  else
+    echo "Unsupported package manager detected."
+    exit 1
+  fi
 else
   echo "Unsupported OS detected."
   exit 1
@@ -29,6 +43,40 @@ if [ ! -d "$backup_folder" ]; then
   mkdir -p $backup_folder
 fi
 
+# Function to check if a file is already correctly symlinked
+check_symlink() {
+    local target_file="$1"
+    local repo_file="$2"
+    
+    # Check if file exists and is a symlink
+    if [ -L "$target_file" ]; then
+        # Get the actual path the symlink points to
+        local current_target=$(readlink "$target_file")
+        # Compare with the repo file path
+        if [ "$current_target" = "$repo_file" ]; then
+            return 0  # Already correctly linked
+        fi
+    fi
+    return 1  # Not linked or incorrectly linked
+}
+
+# Function to check if directory is correctly symlinked
+check_dir_symlink() {
+    local target_dir="$1"
+    local repo_dir="$2"
+    
+    # Check if directory exists and is a symlink
+    if [ -L "$target_dir" ]; then
+        # Get the actual path the symlink points to
+        local current_target=$(readlink "$target_dir")
+        # Compare with the repo directory path
+        if [ "$current_target" = "$repo_dir" ]; then
+            return 0  # Already correctly linked
+        fi
+    fi
+    return 1  # Not linked or incorrectly linked
+}
+
 #_____________________ Homebrew Configuration _____________________
 if [ "$OS" == "mac" ]; then
   # Check if Homebrew is installed
@@ -39,8 +87,23 @@ if [ "$OS" == "mac" ]; then
     brew install wget
   else
     echo "Homebrew is already installed."
-    echo "Installing wget..."
-    brew install wget
+    if [ -z "$(command -v wget)" ]; then
+      echo "Installing wget..."
+      brew install wget
+    fi
+  fi
+elif [ "$OS" == "linux" ]; then
+  # Check if wget is installed
+  if [ -z "$(command -v wget)" ]; then
+    echo "wget is not installed. Please install wget first."
+    echo "Do you want me to install wget for you and have admin rights?"
+    read -p "Do you want to install wget with sudo? [y/n]: " install_wget
+    if [ "$install_wget" == "y" ]; then
+      sudo $PKG_MANAGER install wget
+    else
+      echo "Exiting script..."
+      exit 1
+    fi
   fi
 fi
 
@@ -59,7 +122,7 @@ if [ -z "$(command -v zsh)" ]; then
     echo "If you however do not have sudo privileges, I can install zsh for you."
     read -p "Do you want to install zsh with sudo or using .local and linking? [s/l]: " install_zsh
     if [ "$install_zsh" == "s" ]; then
-      sudo apt install zsh
+      sudo $PKG_MANAGER install zsh
     elif [ "$install_zsh" == "l" ]; then
       wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
       mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
@@ -80,15 +143,17 @@ if [ -z "$(command -v zsh)" ]; then
   fi
 fi
 
-# Handle .zshrc file
+# Sym link the .zshrc file
 if [ ! -f "$HOME/.zshrc" ]; then
-  touch $HOME/.zshrc
-else 
-  echo "Backing up existing .zshrc file..."
-  mv $HOME/.zshrc $backup_folder/.zshrc.bak
-  touch $HOME/.zshrc
+    touch $HOME/.zshrc
+    ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
+elif ! check_symlink "$HOME/.zshrc" "$SCRIPT_DIR/.zshrc"; then
+    echo "Backing up existing .zshrc file..."
+    mv $HOME/.zshrc $backup_folder/.zshrc.bak
+    ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
+else
+    echo ".zshrc is already correctly linked"
 fi
-ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
 
  # Set zsh as the default shell if it is not already
 if [ "${SHELL: -3}" != "zsh" ]; then
@@ -143,14 +208,17 @@ if [ ! -d "$p10k" ]; then
 else
   echo "powerlevel10k is already installed."
 fi
+# Symlink the .p10k.zsh file
 if [ ! -f "$HOME/.p10k.zsh" ]; then
-  touch $HOME/.p10k.zsh
+    touch $HOME/.p10k.zsh
+    ln -sf $SCRIPT_DIR/.p10k.zsh $HOME/.p10k.zsh
+elif ! check_symlink "$HOME/.p10k.zsh" "$SCRIPT_DIR/.p10k.zsh"; then
+    echo "Backing up existing .p10k.zsh file..."
+    mv $HOME/.p10k.zsh $backup_folder/.p10k.zsh.bak
+    ln -sf $SCRIPT_DIR/.p10k.zsh $HOME/.p10k.zsh
 else
-  echo "Backing up existing .p10k.zsh file..."
-  mv $HOME/.p10k.zsh $backup_folder/.p10k.zsh.bak
-  touch $HOME/.p10k.zsh
+    echo ".p10k.zsh is already correctly linked"
 fi
-ln -sf $SCRIPT_DIR/.p10k.zsh $HOME/.p10k.zsh
 
 # Check if zsh-syntax-highlighting is installed
 zsh_syntax="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
@@ -174,22 +242,27 @@ fi
 
 # Check if git is installed
 if [ -z "$(command -v git)" ]; then
-  echo "Git is not installed. Please install git first."
-  exit 1
+    echo "Git is not installed. Please install git first."
+    exit 1
 fi
+
+# Check if the parent .config directory exists
+if [ ! -d "$HOME/.config" ]; then
+    echo "Creating .config directory..."
+    mkdir -p "$HOME/.config"
+fi
+
+# Handle git config directory
 if [ ! -d "$HOME/.config/git" ]; then
-  echo "Creating git config directory..."
-  mkdir -p $HOME/.config/git
-fi
-if [ ! -f "$HOME/.config/git/config" ]; then
-  echo "Creating git config file..."
-  touch $HOME/.config/git/config
+    echo "Creating git config directory symlink..."
+    ln -sf "$SCRIPT_DIR/.config/git" "$HOME/.config/git"
+elif ! check_dir_symlink "$HOME/.config/git" "$SCRIPT_DIR/.config/git"; then
+    echo "Backing up existing git config directory..."
+    mv "$HOME/.config/git" "$backup_folder/git.bak"
+    ln -sf "$SCRIPT_DIR/.config/git" "$HOME/.config/git"
 else
-  echo "Backing up existing git config file..."
-  mv $HOME/.config/git/config $backup_folder/gitconfig.bak
-  touch $HOME/.config/git/config
+    echo "git config directory is already correctly linked"
 fi
-ln -sf $SCRIPT_DIR/.config/git/config $HOME/.config/git/config
 
 #_____________________ Vim Configuration _____________________
 
@@ -198,16 +271,49 @@ if [ -z "$(command -v vim)" ]; then
   echo "Vim is not installed. Please install vim first."
   exit 1
 else
-  # Check if there is a .vimrc file
-  if [ ! -f "$HOME/.vimrc" ]; then
+if [ ! -f "$HOME/.vimrc" ]; then
     touch $HOME/.vimrc
-  else
+    ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
+elif ! check_symlink "$HOME/.vimrc" "$SCRIPT_DIR/.vimrc"; then
     echo "Backing up existing .vimrc file..."
     mv $HOME/.vimrc $backup_folder/.vimrc.bak
-    touch $HOME/.vimrc
-  fi
-  ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
+    ln -sf $SCRIPT_DIR/.vimrc $HOME/.vimrc
+else
+    echo ".vimrc is already correctly linked"
+fi
 fi
 
+#_____________________ Nvim Configuration _____________________
 
-exec zsh
+# Check if nvim is installed
+if [ -z "$(command -v nvim)" ]; then
+  if [ "$OS" == "mac" ]; then
+    echo "Neovim is not installed. Installing neovim..."
+    brew install neovim
+  elif [ "$OS" == "linux" ]; then
+    echo "Neovim is not installed. Please install neovim first."
+    echo "Do you want me to install neovim for you and have admin rights?"
+    read -p "Do you want to install neovim with sudo? [y/n]: " install_nvim
+    if [ "$install_nvim" == "y" ]; then
+      sudo $PKG_MANAGER install neovim
+    else
+      echo "Exiting script..."
+      exit 1
+    fi
+  fi
+fi
+
+# Handle nvim config directory
+if [ ! -d "$HOME/.config/nvim" ]; then
+    echo "Creating nvim config directory symlink..."
+    mkdir -p "$HOME/.config"
+    ln -sf "$SCRIPT_DIR/.config/nvim" "$HOME/.config/nvim"
+elif ! check_dir_symlink "$HOME/.config/nvim" "$SCRIPT_DIR/.config/nvim"; then
+    echo "Backing up existing nvim config directory..."
+    mv "$HOME/.config/nvim" "$backup_folder/nvim.bak"
+    ln -sf "$SCRIPT_DIR/.config/nvim" "$HOME/.config/nvim"
+else
+    echo "nvim config directory is already correctly linked"
+fi
+
+exec zsh  
