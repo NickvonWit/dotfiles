@@ -22,3 +22,6 @@ Temporary Items
 
 # Git
 .gitconfig
+
+# Nvim
+lazy-lock.json
