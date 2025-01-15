@@ -193,6 +193,29 @@ else
  echo "zs-autosuggestions is already installed."
 fi
 
+# _________________________ Fonts ____________________________
+
+# Detect OS and set font directory
+if [ "$OS" == "mac" ]; then
+    # macOS font directory
+    FONT_DIR="$HOME/Library/Fonts"
+else
+    # Linux font directory
+    FONT_DIR="$HOME/.local/share/fonts"
+fi
+
+# Create fonts directory if it doesn't exist
+mkdir -p "$FONT_DIR"
+
+# Copy Nerd Fonts to appropriate fonts directory
+cp $SCRIPT_DIR/fonts/*.ttf "$FONT_DIR/" 2>/dev/null
+cp $SCRIPT_DIR/fonts/*.otf "$FONT_DIR/" 2>/dev/null
+
+# Refresh font cache (only needed on Linux)
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    fc-cache -f -v
+fi
+
 #_____________________ Git Configuration _____________________
 
 # Check if git is installed
@@ -288,4 +311,22 @@ if [ -z "$(command -v rg)" ]; then
     fi
   fi
 fi
+
+# Print OS-specific instructions
+echo "Installation complete!"
+# Print some newlines to make it clear that instructions follow
+echo -e "\n\n________________________________________________________\n\n"
+
+echo "Please configure the following manually:"
+if [ "$OS" == "mac" ]; then
+    echo "You may need to configure your terminal manually:"
+    echo "- iTerm2: Preferences → Profiles → Text → Font"
+    echo "- Terminal.app: Preferences → Profiles → Text"
+else
+    echo "You may need to configure your terminal manually:"
+    echo "- GNOME Terminal: Preferences → Profile → Text"
+    echo "- Konsole: Settings → Edit Current Profile → Appearance"
+fi
+echo "- VS Code: settings.json → terminal.integrated.fontFamily"
+
 exec zsh  
