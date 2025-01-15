@@ -271,4 +271,21 @@ else
     echo "nvim config directory is already correctly linked"
 fi
 
+# Install ripgrep for telescope
+if [ -z "$(command -v rg)" ]; then
+  if [ "$OS" == "mac" ]; then
+    echo "ripgrep is not installed. Installing ripgrep..."
+    brew install ripgrep
+  elif [ "$OS" == "linux" ]; then
+    echo "ripgrep is not installed. Please install ripgrep first."
+    echo "Do you want me to install ripgrep for you and have admin rights?"
+    read -p "Do you want to install ripgrep with sudo? [y/n]: " install_rg
+    if [ "$install_rg" == "y" ]; then
+      sudo $PKG_MANAGER install ripgrep
+    else
+      echo "Exiting script..."
+      exit 1
+    fi
+  fi
+fi
 exec zsh  

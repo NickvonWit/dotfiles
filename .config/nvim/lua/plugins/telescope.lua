@@ -4,8 +4,6 @@ return {
 		tag = "0.1.8",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			-- Make ripgrep a proper dependency that needs to be installed
-			{ "BurntSushi/ripgrep", build = "cargo install ripgrep" },
 		},
 		config = function()
 			local telescope = require("telescope")
