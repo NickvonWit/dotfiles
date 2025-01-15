@@ -120,8 +120,8 @@ if [ -z "$(command -v zsh)" ]; then
   elif [ "$OS" == "linux" ]; then
     echo "For Linux, run 'sudo apt install zsh'"
     echo "If you however do not have sudo privileges, I can install zsh for you."
-    read -p "Do you want to install zsh with sudo or using .local and linking? [s/l]: " install_zsh
-    if [ "$install_zsh" == "s" ]; then
+    read -p "Do you want to install zsh with sudo? [y/n]: " install_zsh
+    if [ "$install_zsh" == "y" ]; then
       sudo $PKG_MANAGER install zsh
       chsh -s $(which zsh)
     fi
