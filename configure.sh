@@ -213,7 +213,8 @@ cp $SCRIPT_DIR/fonts/*.otf "$FONT_DIR/" 2>/dev/null
 
 # Refresh font cache (only needed on Linux)
 if [[ "$OSTYPE" != "darwin"* ]]; then
-    fc-cache -f -v
+    fc-cache -f
+    echo "Font cache refreshed."
 fi
 
 #_____________________ Git Configuration _____________________
