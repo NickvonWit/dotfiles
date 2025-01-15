@@ -123,22 +123,7 @@ if [ -z "$(command -v zsh)" ]; then
     read -p "Do you want to install zsh with sudo or using .local and linking? [s/l]: " install_zsh
     if [ "$install_zsh" == "s" ]; then
       sudo $PKG_MANAGER install zsh
-    elif [ "$install_zsh" == "l" ]; then
-      wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
-      mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
-      cd zsh
-      mkdir -p $SCRIPT_DIR/.local
-      ./configure --prefix=$SCRIPT_DIR/.local
-      make && make install
-      cd ..
-      rm -rf zsh.tar zsh
-      mkdir -p $HOME/.local/bin
-      ln -sf $SCRIPT_DIR/.local/bin/zsh $HOME/.local/bin/zsh
-      touch $HOME/.aliases
-      # Check if this is already in the .aliases file
-      if ! grep -q "export PATH=\"\$HOME/.local/bin:\$PATH\"" $HOME/.aliases; then
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.aliases
-      fi
+      chsh -s $(which zsh)
     fi
   fi
 fi
@@ -153,36 +138,6 @@ elif ! check_symlink "$HOME/.zshrc" "$SCRIPT_DIR/.zshrc"; then
     ln -sf $SCRIPT_DIR/.zshrc $HOME/.zshrc
 else
     echo ".zshrc is already correctly linked"
-fi
-
- # Set zsh as the default shell if it is not already
-if [ "${SHELL: -3}" != "zsh" ]; then
-  echo "Setting zsh as the default shell..."
-  if ! chsh -l | grep -q "$(which zsh)"; then
-    echo "zsh is not listed in chsh -l. Please add it manually."
-    echo "If I previously installed zsh for you, I can add it for you."
-    read -p "Do you want to default zsh the scuffed way? [y/n]: " add_zsh
-    if [ "$add_zsh" == "y" ]; then
-      mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
-      touch $HOME/.bash_profile
-      ln -sf $SCRIPT_DIR/cluster/.bash_profile $HOME/.bash_profile
-    else
-      echo "Exiting script..."
-    fi
-    exit 1
-  fi
-  # Check if user has sudo privileges
-  echo "If you do not have sudo privileges, I can add zsh for you."
-  read -p "Do you want to default zsh the scuffed way? [y/n]: " default_zsh
-  if [ "$default_zsh" == "y" ]; then
-    mv $HOME/.bash_profile $backup_folder/.bash_profile.bak
-    touch $HOME/.bash_profile
-    ln -sf $SCRIPT_DIR/cluster/.bash_profile $HOME/.bash_profile
-  else
-    chsh -s $(which zsh)
-  fi
-else
-  echo "zsh is already the default shell."
 fi
 
 echo "Zsh configuration complete. For system specific aliases, create a .aliases file in home."
