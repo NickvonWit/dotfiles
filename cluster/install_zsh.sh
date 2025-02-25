@@ -32,8 +32,11 @@ fi
 
  echo "Setting zsh as the default shell..."
 
-# Backup existing .bash_profile and create new one that launches zsh
 if [ -f $HOME/.bash_profile ]; then
-    mv $HOME/.bash_profile $HOME/.bash_profile.bak
+    # File exists - append the last 8 lines from source to existing file
+    tail -n 8 $SCRIPT_DIR/.bash_profile >> $HOME/.bash_profile
+else
+    # File doesn't exist - copy the entire file
+    cp $SCRIPT_DIR/.bash_profile $HOME/.bash_profile
 fi
-ln -sf $SCRIPT_DIR/.bash_profile $HOME/.bash_profile
+
