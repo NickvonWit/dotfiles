@@ -32,6 +32,8 @@ luac.out
 # Neovim state files
 .netrwhist
 *~
+# tmux plugins
+tmux/.config/tmux/plugins/*
 
 # Plugin directory
 plugin/packer_compiled.lua
