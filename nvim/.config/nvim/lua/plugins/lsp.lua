@@ -1,8 +1,9 @@
 return {
 	{
 		"neovim/nvim-lspconfig",
-		event = { "BufReadPost" },
+		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "LspInfo", "LspInstall", "LspUninstall", "Mason" },
+		keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
 		dependencies = {
 			-- Plugin(s) and UI to automatically install LSPs to stdpath
 			"williamboman/mason.nvim",
@@ -77,14 +78,46 @@ return {
 					},
 				},
 				pyright = {},
+				-- Add C/C++ support
+				clangd = {},
+				cmake = {},
+				pylsp = {},
+				-- Add LaTeX support
+				texlab = {
+					settings = {
+						texlab = {
+							build = {
+								onSave = true,
+							},
+							chktex = {
+								onEdit = true,
+								onOpenAndSave = true,
+							},
+							formatterLineLength = 80,
+						},
+					},
+				},
+				ltex = {}, -- Language tool for LaTeX, Markdown, etc.
 			}
 
 			local formatters = {
-				prettierd = {},
-				stylua = {},
+				-- Add some common formatters
+				clang_format = {
+					cmd = { "clang-format", "-assume-filename=foo.cpp", "-style=file" },
+					filetypes = { "c", "cpp" },
+				},
+				latexindent = {
+					cmd = { "latexindent", "-s", "-y=indentation:" },
+					filetypes = { "tex", "latex", "bib" },
+				},
+				stylua = {
+					cmd = { "stylua", "--config-path", vim.fn.stdpath("config") .. "/stylua.toml", "-" },
+					filetypes = { "lua" },
+				},
 			}
 
-			local manually_installed_servers = { "clangd", "cmake", "pylsp" }
+			-- Remove manually_installed_servers since we want to auto-install all servers
+			local manually_installed_servers = {}
 
 			local mason_tools_to_install = vim.tbl_keys(vim.tbl_deep_extend("force", {}, servers, formatters))
 
@@ -100,6 +133,19 @@ return {
 				ensure_installed = ensure_installed,
 			})
 
+			-- Setup mason so it can manage 3rd party LSP servers
+			require("mason").setup({
+				ui = {
+					border = "rounded",
+				},
+			})
+
+			-- Configure mason-lspconfig to automatically set up servers
+			require("mason-lspconfig").setup({
+				ensure_installed = ensure_installed,
+				automatic_installation = true,
+			})
+
 			-- Iterate over our servers and set them up
 			for name, config in pairs(servers) do
 				require("lspconfig")[name].setup({
@@ -113,15 +159,6 @@ return {
 					root_dir = config.root_dir,
 				})
 			end
-
-			-- Setup mason so it can manage 3rd party LSP servers
-			require("mason").setup({
-				ui = {
-					border = "rounded",
-				},
-			})
-
-			require("mason-lspconfig").setup()
 
 			-- Configure borderd for LspInfo ui
 			require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -156,6 +193,12 @@ return {
 				typescriptreact = { "biome" },
 				svelte = { "prettierd", "prettier " },
 				lua = { "stylua" },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
+				-- Add LaTeX formatters
+				tex = { "latexindent" },
+				latex = { "latexindent" },
+				bib = { "latexindent" },
 			},
 		},
 	},
