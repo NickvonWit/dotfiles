@@ -100,39 +100,6 @@ return {
 				ltex = {}, -- Language tool for LaTeX, Markdown, etc.
 			}
 
-			local formatters = {
-				-- Add some common formatters
-				clang_format = {
-					cmd = { "clang-format", "-assume-filename=foo.cpp", "-style=file" },
-					filetypes = { "c", "cpp" },
-				},
-				latexindent = {
-					cmd = { "latexindent", "-s", "-y=indentation:" },
-					filetypes = { "tex", "latex", "bib" },
-				},
-				stylua = {
-					cmd = { "stylua", "--config-path", vim.fn.stdpath("config") .. "/stylua.toml", "-" },
-					filetypes = { "lua" },
-				},
-			}
-
-			-- Remove manually_installed_servers since we want to auto-install all servers
-			local manually_installed_servers = {}
-
-			local mason_tools_to_install = vim.tbl_keys(vim.tbl_deep_extend("force", {}, servers, formatters))
-
-			local ensure_installed = vim.tbl_filter(function(name)
-				return not vim.tbl_contains(manually_installed_servers, name)
-			end, mason_tools_to_install)
-
-			require("mason-tool-installer").setup({
-				auto_update = true,
-				run_on_start = true,
-				start_delay = 3000,
-				debounce_hours = 12,
-				ensure_installed = ensure_installed,
-			})
-
 			-- Setup mason so it can manage 3rd party LSP servers
 			require("mason").setup({
 				ui = {
@@ -142,8 +109,21 @@ return {
 
 			-- Configure mason-lspconfig to automatically set up servers
 			require("mason-lspconfig").setup({
-				ensure_installed = ensure_installed,
+				ensure_installed = vim.tbl_keys(servers),
 				automatic_installation = true,
+			})
+
+			-- Setup mason-tool-installer for formatters and linters
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					"stylua",
+					"black",
+					"prettierd",
+					"clang-format",
+					"latexindent",
+				},
+				auto_update = true,
+				run_on_start = true,
 			})
 
 			-- Iterate over our servers and set them up
@@ -177,29 +157,46 @@ return {
 		cmd = { "ConformInfo" },
 		opts = {
 			notify_on_error = false,
-			default_format_opts = {
-				async = true,
+			format_on_save = {
 				timeout_ms = 500,
-				lsp_format = "fallback",
-			},
-			format_after_save = {
-				async = true,
-				timeout_ms = 500,
-				lsp_format = "fallback",
+				lsp_fallback = true,
 			},
 			formatters_by_ft = {
-				javascript = { "biome" },
-				typescript = { "biome" },
-				typescriptreact = { "biome" },
-				svelte = { "prettierd", "prettier " },
 				lua = { "stylua" },
-				c = { "clang-format" },
-				cpp = { "clang-format" },
-				-- Add LaTeX formatters
+				python = { "black" },
+				javascript = { "prettierd" },
+				typescript = { "prettierd" },
+				javascriptreact = { "prettierd" },
+				typescriptreact = { "prettierd" },
+				svelte = { "prettierd" },
+				css = { "prettierd" },
+				html = { "prettierd" },
+				json = { "prettierd" },
+				yaml = { "prettierd" },
+				markdown = { "prettierd" },
+				c = { "clang_format" },
+				cpp = { "clang_format" },
 				tex = { "latexindent" },
 				latex = { "latexindent" },
 				bib = { "latexindent" },
 			},
+			-- Define formatter configurations
+			formatters = {
+				-- You can specify formatter options here
+				clang_format = {
+					-- Any clang-format options can go here
+					args = { "-assume-filename=foo.cpp", "-style=file" },
+				},
+				stylua = {
+					-- Any stylua options can go here
+					args = { "--config-path", vim.fn.stdpath("config") .. "/stylua.toml", "-" },
+				},
+				latexindent = {
+					-- Any latexindent options can go here
+					args = { "-s", "-y=indentation:" },
+				},
+			},
 		},
 	},
 }
+

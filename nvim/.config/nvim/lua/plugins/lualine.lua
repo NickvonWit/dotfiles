@@ -56,6 +56,26 @@ return {
 				return " " .. table.concat(client_names, ", ")
 			end
 
+			-- Formatter component to show available formatters for current filetype
+			local function formatters()
+				local buf = vim.api.nvim_get_current_buf()
+				local ft = vim.bo[buf].filetype
+				
+				-- Get formatters from conform.nvim if available
+				local ok, conform = pcall(require, "conform")
+				if not ok then
+					return ""
+				end
+				
+				local formatters_for_ft = conform.formatters_by_ft[ft]
+				if not formatters_for_ft or #formatters_for_ft == 0 then
+					return ""
+				end
+				
+				-- Format with a nice icon and comma-separated formatter names
+				return " " .. table.concat(formatters_for_ft, ", ")
+			end
+
 			require("lualine").setup({
 				options = {
 					theme = "catppuccin",
@@ -80,7 +100,7 @@ return {
 							padding = { left = 1, right = 1 },
 						},
 						{
-							-- Add a separator between LSP clients and filetype
+							-- Add a separator between LSP clients and formatters
 							function()
 								return "│"
 							end,
@@ -90,6 +110,28 @@ return {
 								-- Only show separator if there are LSP clients
 								local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
 								return #clients > 0
+							end,
+						},
+						{
+							formatters,
+							color = { fg = "#f9e2af" }, -- Use Catppuccin yellow color for formatters
+							padding = { left = 1, right = 1 },
+						},
+						{
+							-- Add a separator between formatters and filetype
+							function()
+								return "│"
+							end,
+							color = { fg = "#6c7086" }, -- Subtle color for the separator
+							padding = { left = 0, right = 0 },
+							cond = function()
+								-- Only show separator if there are formatters
+								local buf = vim.api.nvim_get_current_buf()
+								local ft = vim.bo[buf].filetype
+								local ok, conform = pcall(require, "conform")
+								if not ok then return false end
+								local formatters_for_ft = conform.formatters_by_ft[ft]
+								return formatters_for_ft and #formatters_for_ft > 0
 							end,
 						},
 						{

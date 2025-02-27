@@ -34,7 +34,9 @@ return {
 					},
 				},
 				filetypes = {
-					yaml = false, -- Enabled for YAML
+                    -- generally attach to file
+                    "*",
+					yaml = false,
 					markdown = true,
 					help = false,
 					gitcommit = false,

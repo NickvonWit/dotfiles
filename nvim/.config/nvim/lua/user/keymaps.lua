@@ -107,6 +107,7 @@ nnoremap("U", "<C-r>")
 -- Turn off highlighted results
 nnoremap("<leader>no", "<cmd>noh<cr>")
 
+-- Toggle wrap
 nnoremap("<leader>tw", function()
 	Snacks.toggle.option("wrap")
 end, { desc = "[T]oggle [Wrap]" })
