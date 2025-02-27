@@ -38,16 +38,34 @@ return {
 				return string.format("󱡅 %s/%d", current_mark, total_marks)
 			end
 
+			-- Improved LSP component with comma-separated clients
+			local function lsp_clients()
+				local buf = vim.api.nvim_get_current_buf()
+				local clients = vim.lsp.get_clients({ bufnr = buf })
+
+				if #clients == 0 then
+					return ""
+				end
+
+				local client_names = {}
+				for _, client in ipairs(clients) do
+					table.insert(client_names, client.name)
+				end
+
+				-- Format with a nice icon and comma-separated client names
+				return " " .. table.concat(client_names, ", ")
+			end
+
 			require("lualine").setup({
 				options = {
 					theme = "catppuccin",
 					globalstatus = true,
-					component_separators = { left = "", right = "" },
+					component_separators = { left = "", right = "" },
 					section_separators = { left = "█", right = "█" },
 				},
 				sections = {
 					lualine_b = {
-						{ "branch", icon = "", fmt = truncate_branch_name },
+						{ "branch", icon = "", fmt = truncate_branch_name },
 						harpoon_component,
 						"diff",
 						"diagnostics",
@@ -56,7 +74,29 @@ return {
 						{ "filename", path = 1 },
 					},
 					lualine_x = {
-						"filetype",
+						{
+							lsp_clients,
+							color = { fg = "#89b4fa" }, -- Use Catppuccin blue color for LSP names
+							padding = { left = 1, right = 1 },
+						},
+						{
+							-- Add a separator between LSP clients and filetype
+							function()
+								return "│"
+							end,
+							color = { fg = "#6c7086" }, -- Subtle color for the separator
+							padding = { left = 0, right = 0 },
+							cond = function()
+								-- Only show separator if there are LSP clients
+								local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+								return #clients > 0
+							end,
+						},
+						{
+							"filetype",
+							icon_only = false, -- Show both icon and name
+							padding = { left = 1, right = 1 },
+						},
 					},
 				},
 			})
