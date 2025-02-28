@@ -158,7 +158,7 @@ return {
 		opts = {
 			notify_on_error = false,
 			format_on_save = {
-                pattern = { "*.tex" }
+                pattern = { "*.tex" },
 				timeout_ms = 500,
 				lsp_fallback = true,
 			},
@@ -180,6 +180,9 @@ return {
 				tex = { "texfmt" },
 				latex = { "texfmt" },
 				bib = { "texfmt" },
+                zsh = { "beautysh" },
+                sh = { "beautysh" },
+                bash = { "beautysh" },
 			},
 			-- Define formatter configurations
 			formatters = {
