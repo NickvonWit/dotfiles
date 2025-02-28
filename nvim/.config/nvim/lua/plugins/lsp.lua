@@ -158,6 +158,7 @@ return {
 		opts = {
 			notify_on_error = false,
 			format_on_save = {
+                pattern = { "*.tex" }
 				timeout_ms = 500,
 				lsp_fallback = true,
 			},
@@ -176,9 +177,9 @@ return {
 				markdown = { "prettierd" },
 				c = { "clang_format" },
 				cpp = { "clang_format" },
-				tex = { "latexindent" },
-				latex = { "latexindent" },
-				bib = { "latexindent" },
+				tex = { "texfmt" },
+				latex = { "texfmt" },
+				bib = { "texfmt" },
 			},
 			-- Define formatter configurations
 			formatters = {
