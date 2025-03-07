@@ -119,7 +119,6 @@ return {
 					"stylua",
 					"black",
 					"prettierd",
-					"clang-format",
 					"latexindent",
 				},
 				auto_update = true,
@@ -175,8 +174,6 @@ return {
 				json = { "prettierd" },
 				yaml = { "prettierd" },
 				markdown = { "prettierd" },
-				c = { "clang_format" },
-				cpp = { "clang_format" },
 				tex = { "texfmt" },
 				latex = { "texfmt" },
 				bib = { "texfmt" },
@@ -187,10 +184,6 @@ return {
 			-- Define formatter configurations
 			formatters = {
 				-- You can specify formatter options here
-				clang_format = {
-					-- Any clang-format options can go here
-					args = { "-assume-filename=foo.cpp", "-style=file" },
-				},
 				stylua = {
 					-- Any stylua options can go here
 					args = { "--config-path", vim.fn.stdpath("config") .. "/stylua.toml", "-" },
