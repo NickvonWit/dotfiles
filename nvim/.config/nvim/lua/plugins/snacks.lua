@@ -109,7 +109,7 @@ return {
 				desc = "[N]otification [H]istory",
 			},
 			{
-				"<leader>z",
+				"<leader>Z",
 				function()
 					Snacks.toggle.dim():toggle()
 				end,
