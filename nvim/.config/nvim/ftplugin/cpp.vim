@@ -7,4 +7,3 @@ setlocal shiftwidth=2
 " Enable automatic indentation
 setlocal autoindent
 setlocal smartindent
-
