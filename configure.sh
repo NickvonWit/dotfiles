@@ -204,6 +204,12 @@ else
     install_package ripgrep || echo "Warning: ripgrep not installed. Some neovim plugins may not work correctly."
 fi
 
+# ___________________________ TMUX ____________________________
+
+# Check if tmux is installed
+install_package tmux || echo "Skipping tmux configuration."
+
+
 #_____________________ Stow Configuration _____________________
 
 # Backup any existing configs before stowing
@@ -251,7 +257,7 @@ stow_packages() {
     mkdir -p "$HOME/.config"
 
     # List of packages to stow
-    local packages=("zsh" "git" "vim" "nvim")
+    local packages=("zsh" "git" "vim" "nvim" "tmux")
 
     for package in "${packages[@]}"; do
         if [ -d "$SCRIPT_DIR/$package" ]; then
