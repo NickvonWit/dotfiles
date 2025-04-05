@@ -143,11 +143,24 @@ return {
 			require("lspconfig.ui.windows").default_options.border = "rounded"
 
 			-- Configure diagnostics border
-			vim.diagnostic.config({
-				float = {
-					border = "rounded",
-				},
-			})
+			vim.api.nvim_create_autocmd("LspAttach", {
+				callback = function()
+					vim.diagnostic.config({
+						virtual_text = {
+							prefix = "●",
+							spacing = 2,
+						},
+						signs = true,
+						underline = true,
+						severity_sort = true,
+						update_in_insert = false,
+						float = {
+							border = "rounded",
+							source = "always",
+						},
+                    })
+                end,
+            })
 		end,
 	},
 	{
@@ -157,7 +170,7 @@ return {
 		opts = {
 			notify_on_error = false,
 			format_on_save = {
-                pattern = { "*.tex" },
+				pattern = { "*.tex" },
 				timeout_ms = 500,
 				lsp_fallback = true,
 			},
@@ -177,9 +190,9 @@ return {
 				tex = { "texfmt" },
 				latex = { "texfmt" },
 				bib = { "texfmt" },
-                zsh = { "beautysh" },
-                sh = { "beautysh" },
-                bash = { "beautysh" },
+				zsh = { "beautysh" },
+				sh = { "beautysh" },
+				bash = { "beautysh" },
 			},
 			-- Define formatter configurations
 			formatters = {
@@ -196,4 +209,3 @@ return {
 		},
 	},
 }
-
