@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 GITSTATUS_LOG_LEVEL=DEBUG
 # If you come from bash you might have to change your $PATH.
@@ -90,9 +90,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
+    export EDITOR='nvim'
 else
-  export EDITOR='vim'
+    export EDITOR='vim'
 fi
 
 # Compilation flags
@@ -105,10 +105,9 @@ fi
 #
 # General aliases
 alias c="clear"
-bindkey '^ ' autosuggest-accept
 # Link system aliases
 if [ -f $HOME/.aliases ]; then
-  source $HOME/.aliases
+    source $HOME/.aliases
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

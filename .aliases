@@ -10,6 +10,7 @@ alias se="/Users/nickschaller/Documents/ETHZ/RW-5/SoftwareEngineering"
 
 # General aliases
 
+bindkey '^ ' autosuggest-accept
 alias ct="clear; tree"
 alias pro="cd /Users/nickschaller/Documents/Projects"
 alias pwdc="pwd | pbcopy"
