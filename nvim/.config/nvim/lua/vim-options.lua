@@ -43,7 +43,7 @@ vim.keymap.set('n', '<C-k>', '<C-w>k', { silent = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { silent = true })
 
 -- General keymaps
-vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>', { silent = true })
+vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>', { silent = true }) -- Clear search highlights
 
 -- Quality of life improvements
 vim.keymap.set('n', '<leader>w', ':w<CR>', { silent = true })        -- Quick save
