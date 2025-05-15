@@ -101,3 +101,10 @@ nnoremap("<leader>ff", function()
 		follow = true,
 	})
 end, { desc = "Telescope: find files" })
+
+-- ==== Snacks ==== 
+local snacks = require("snacks")
+
+-- Git 
+nnoremap("<leader>og", function() snacks.gitbrowse() end, { desc = "[O]pen [G]it" })
+nnoremap("<leader>gb", function() snacks.git.blame_line() end, { desc = "[G]it [B]lame"})
