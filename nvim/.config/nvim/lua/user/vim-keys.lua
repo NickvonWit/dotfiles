@@ -83,3 +83,18 @@ end, { desc = "Harpoon: jump 3" })
 nnoremap("<leader>4", function()
 	harpoon:list():select(4)
 end, { desc = "Harpoon: jump 4" })
+
+-- ==== Telescope ====
+local telescope = require("telescope.builtin")
+
+nnoremap("<leader>fb", telescope.buffers, { desc = "Telescope: search buffers" })
+nnoremap("<leader>fg", telescope.live_grep, { desc = "Telescope: live grep" })
+nnoremap("<leader>fh", telescope.help_tags, { desc = "Telescope: help tags" })
+
+nnoremap("<leader>ff", function()
+	telescope.find_files({
+		hidden = true,
+		no_ignore = true,
+		follow = true,
+	})
+end, { desc = "Telescope: find files" })
