@@ -84,6 +84,9 @@ nnoremap("<leader>4", function()
 	harpoon:list():select(4)
 end, { desc = "Harpoon: jump 4" })
 
+-- ==== Undo Tree ====
+nnoremap("<leader>ut", ":UndotreeToggle<CR>", { desc = "Toggle [U]ndo[T]ree " })
+
 -- ==== Telescope ====
 local telescope = require("telescope.builtin")
 
