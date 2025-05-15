@@ -108,3 +108,6 @@ local snacks = require("snacks")
 -- Git 
 nnoremap("<leader>og", function() snacks.gitbrowse() end, { desc = "[O]pen [G]it" })
 nnoremap("<leader>gb", function() snacks.git.blame_line() end, { desc = "[G]it [B]lame"})
+
+-- Notifier
+nnoremap("<leader>nh", function() snacks.notifier.show_history() end, { desc = "Show [N]otifier [H]istory" })
