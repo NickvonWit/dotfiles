@@ -10,8 +10,13 @@ return {
   },
   config = function()
 
-    require("telescope").setup()
-
+    require("telescope").setup {
+      pickers = {
+        find_files = {
+          theme = "ivy"
+        }
+      },
+    }
     pcall(require("telescope").load_extension, "fzf")
   end
 }
