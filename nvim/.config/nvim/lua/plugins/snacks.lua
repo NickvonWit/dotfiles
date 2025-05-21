@@ -1,10 +1,10 @@
 return {
-	{
-		"folke/snacks.nvim",
-		priority = 1000,
-		lazy = false,
-		---@type snacks.Config
-		opts = {
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
       animate = { enabled = true },
       bigfile = { enabled = true },
       git = { enabled = true },
@@ -13,7 +13,6 @@ return {
       notifier = { enabled = true, timeout = 3000, },
       quickfile = { enabled = true },
       scroll = { enabled = true },
-      statuscolumn = { enabled = true },
     },
   }
 }
