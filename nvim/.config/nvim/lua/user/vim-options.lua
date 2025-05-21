@@ -79,6 +79,12 @@ vim.diagnostic.config({
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("AutoFormat", { clear = true }),
   callback = function()
-    vim.lsp.buf.format({ async = false })
+    -- Format only if there's at least one LSP client with formatting capability
+    if #vim.lsp.get_clients({
+          bufnr = 0,
+          method = "textDocument/formatting"
+        }) > 0 then
+      vim.lsp.buf.format({ async = false })
+    end
   end,
 })
