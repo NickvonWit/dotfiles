@@ -135,6 +135,7 @@ nnoremap("<leader>nh", function() snacks.notifier.show_history() end, { desc = "
 
 -- ==== Mason/Lsp ====
 nnoremap("<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
+nnoremap("<leader>so", "<cmd>Outline<cr>)", { desc = "Symbols Outline" })
 
 nnoremap("<leader>nd", function()
   vim.diagnostic.jump({ count = 1, float = true })
