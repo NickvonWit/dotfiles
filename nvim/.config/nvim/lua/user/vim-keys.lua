@@ -44,8 +44,20 @@ nnoremap("<leader>h", ":nohlsearch<CR>",
   { desc = " Clear search highlight ", silent = true })
 
 nnoremap("L", "$", { desc = "Jump to end of line" })
+vnoremap("L", "$", { desc = "Jump to end of line" })
 nnoremap("H", "^", { desc = "Jump to start of line" })
+vnoremap("H", "^", { desc = "Jump to start of line" })
 nnoremap("U", "<C-r>", { desc = "Redo" })
+
+-- ==== Folding ====
+nnoremap("zR", "<cmd>lua require('ufo').openAllFolds()<CR>", { desc = "Open all folds" })
+nnoremap("zM", "<cmd>lua require('ufo').closeAllFolds()<CR>", { desc = "Close all folds" })
+nnoremap("K", function()
+  local winid = require("ufo").peekFoldedLinesUnderCursor()
+  if winid ~= nil then
+    vim.cmd("stopinsert")
+  end
+end, { desc = "Peek folded lines" })
 
 -- ==== Quality of life shortcuts ====
 nnoremap("<leader>'", "<C-^>", { desc = "Switch to last buffer" })
@@ -115,11 +127,9 @@ end, { desc = "Telescope: find all files" })
 
 -- ==== Snacks ====
 local snacks = require("snacks")
-
 -- Git
 nnoremap("<leader>og", function() snacks.gitbrowse() end, { desc = "[O]pen [G]it" })
 nnoremap("<leader>gb", function() snacks.git.blame_line() end, { desc = "[G]it [B]lame" })
-
 -- Notifier
 nnoremap("<leader>nh", function() snacks.notifier.show_history() end, { desc = "Show [N]otifier [H]istory" })
 

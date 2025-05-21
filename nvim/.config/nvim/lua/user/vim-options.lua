@@ -42,7 +42,7 @@ vim.opt.cursorline = true    -- Highlight the current line
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
-vim.opt.foldcolumn = "0"
+vim.opt.foldcolumn = '0'
 vim.opt.foldnestmax = 5
 vim.opt.foldtext = ""
 
