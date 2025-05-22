@@ -2,6 +2,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.background = "light"
+vim.opt.termguicolors = true
 
 -- Indentation
 vim.opt.expandtab = true   -- Convert tabs to spaces
