@@ -19,6 +19,7 @@ return {
       -- Overwrite 'C-y' to 'C-z' to accept easier on Swiss keyboard
       ['<C-y>'] = {},
       ['<C-z>'] = { 'accept', 'fallback' },
+      ['<C-j>'] = { 'accept', 'fallback' },
     },
     appearance = {
       nerd_font_variant = 'mono'
