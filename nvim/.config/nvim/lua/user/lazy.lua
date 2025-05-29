@@ -21,6 +21,9 @@ require("lazy").setup({
     -- import your plugins
     { import = "plugins" },
   },
+  ui = {
+    border = "rounded",
+  },
   -- Configure any other settings here. See the documentation for more details.
   -- Colorscheme that will be used when installing plugins.
   install = {},
