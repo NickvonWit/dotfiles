@@ -1,9 +1,9 @@
 -- ==== Get the utils ====
-local nnoremap = require("user.keymap-utils").nnoremap
-local vnoremap = require("user.keymap-utils").vnoremap
-local inoremap = require("user.keymap-utils").inoremap
-local tnoremap = require("user.keymap-utils").tnoremap
-local xnoremap = require("user.keymap-utils").xnoremap
+local nnoremap = require("user.vim-keymap-utils").nnoremap
+local vnoremap = require("user.vim-keymap-utils").vnoremap
+local inoremap = require("user.vim-keymap-utils").inoremap
+local tnoremap = require("user.vim-keymap-utils").tnoremap
+local xnoremap = require("user.vim-keymap-utils").xnoremap
 
 -- ==== TMUX keymaps ====
 nnoremap("<C-j>", function()
@@ -64,24 +64,24 @@ nnoremap("<leader>'", "<C-^>", { desc = "Switch to last buffer" })
 nnoremap("<leader>w", "<cmd>w<cr>", { desc = " Quick save", silent = false })
 nnoremap("<leader>q", "<cmd>q<cr>", { desc = " Quick exit", silent = false })
 nnoremap("<leader>e",
-  function() require("oil").toggle_float() end, { desc = "Open file tree" })
+  function() require("oil").toggle_float() end, { desc = "Open file [E]xplorer" })
 nnoremap("<leader>L",
-  function() require("lazy").show() end, { desc = " Open lazy GUI " })
+  function() require("lazy").show() end, { desc = " Open [L]azy GUI " })
 
 vnoremap("<", "<gv", { desc = "Better indent left" })
 vnoremap(">", ">gv", { desc = "Better indent right" })
 
-nnoremap("<leader>hs", "<cmd>split<cr>", { desc = " Horizontal split" })
-nnoremap("<leader>vs", "<cmd>vsplit<cr>", { desc = " Vertical split" })
+nnoremap("<leader>hs", "<cmd>split<cr>", { desc = " [H]orizontal [S]plit" })
+nnoremap("<leader>vs", "<cmd>vsplit<cr>", { desc = " [V]ertical [S]plit" })
 
 
 -- ==== Harpoon ====
 local harpoon = require("harpoon")
 
-nnoremap("<leader>ho", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon: Open UI" })
-nnoremap("<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon: Add current file" })
-nnoremap("<leader>hr", function() harpoon:list():remove() end, { desc = "Harpoon: Remove current file" })
-nnoremap("<leader>hc", function() harpoon:list():clear() end, { desc = "Harpoon: Remove all files" })
+nnoremap("<leader>ho", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "[H]arpoon: [O]pen UI" })
+nnoremap("<leader>ha", function() harpoon:list():add() end, { desc = "[H]arpoon: [A]dd current file" })
+nnoremap("<leader>hr", function() harpoon:list():remove() end, { desc = "[H]arpoon: [R]emove current file" })
+nnoremap("<leader>hc", function() harpoon:list():clear() end, { desc = "[H]arpoon: [C]lear all files" })
 
 nnoremap("<leader>1", function()
   harpoon:list():select(1)
@@ -132,10 +132,14 @@ nnoremap("<leader>og", function() snacks.gitbrowse() end, { desc = "[O]pen [G]it
 nnoremap("<leader>gb", function() snacks.git.blame_line() end, { desc = "[G]it [B]lame" })
 -- Notifier
 nnoremap("<leader>nh", function() snacks.notifier.show_history() end, { desc = "Show [N]otifier [H]istory" })
+nnoremap("<leader>z", function() snacks.toggle.dim():toggle() end, { desc = " Toggle [Z]en mode" })
 
 -- ==== Mason/Lsp ====
 nnoremap("<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
-nnoremap("<leader>so", "<cmd>Outline<cr>)", { desc = "Symbols Outline" })
+nnoremap("<leader>so", "<cmd>Outline<cr>)", { desc = "[S]ymbols [O]utline" })
+nnoremap("<leader>td", function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "[T]oggle [D]iagnostic" })
 
 nnoremap("<leader>nd", function()
   vim.diagnostic.jump({ count = 1, float = true })
