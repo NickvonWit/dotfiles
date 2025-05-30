@@ -13,6 +13,7 @@ return {
       notifier = { enabled = true, timeout = 3000, },
       quickfile = { enabled = true },
       scroll = { enabled = true },
+      zen = { enabled = true },
       dashboard = {
         enabled = true,
         col = 0,
