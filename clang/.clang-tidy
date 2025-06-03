@@ -1,0 +1,54 @@
+---
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  modernize-*,
+  readability-*,
+  cppcoreguidelines-*,
+  portability-*,
+  misc-*,
+  -modernize-use-trailing-return-type
+
+WarningsAsErrors: ''
+
+HeaderFilterRegex: '.*'
+
+FormatStyle: file
+
+UseColor: true
+
+SystemHeaders: false
+
+CheckOptions:
+  - key: modernize-use-nullptr.NullMacros
+    value: 'NULL'
+  - key: modernize-use-nullptr.UseNullptr
+    value: 'true'
+
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+
+  - key: readability-identifier-length.MinimumFunctionNameLength
+    value: '1'
+  - key: readability-identifier-length.MinimumVariableNameLength
+    value: '1'
+  - key: readability-identifier-length.MinimumParameterNameLength
+    value: '1'
+
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoreEnums
+    value: 'true'
+  - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
+    value: 'false'
+  - key: cppcoreguidelines-pro-type-vararg.CheckPrintf
+    value: 'true'
+  - key: cppcoreguidelines-pro-type-vararg.CheckScanf
+    value: 'true'
+  - key: cppcoreguidelines-pro-type-const-cast.IgnoreMacros
+    value: 'false'
