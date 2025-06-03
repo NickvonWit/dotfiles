@@ -55,27 +55,6 @@ vim.opt.colorcolumn = "80" -- Place bar to encourage good line length
 -- Clipboard
 vim.opt.clipboard = 'unnamedplus' -- Use system clipboard
 
--- Simple diagnostic configuration
-vim.diagnostic.config({
-  -- Enable virtual text (diagnostics appear at the end of the line)
-  virtual_text = true,
-
-  -- Disable virtual lines
-  virtual_lines = false,
-
-  -- Show signs in the sign column
-  signs = true,
-
-  -- Underline the text with the issue
-  underline = true,
-
-  -- Don't update diagnostics in insert mode
-  update_in_insert = false,
-
-  -- Sort diagnostics by severity
-  severity_sort = true,
-})
-
 -- Formatting on save
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("AutoFormat", { clear = true }),
@@ -89,3 +68,22 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
   end,
 })
+
+-- Diagnostic Config
+vim.diagnostic.config {
+  severity_sort = true,
+  virtual_text = true,
+  virtual_lines = false,
+
+  float = { border = 'rounded', source = 'if_many' },
+  underline = { severity = vim.diagnostic.severity.ERROR },
+
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '󰅚 ',
+      [vim.diagnostic.severity.WARN] = '󰀪 ',
+      [vim.diagnostic.severity.INFO] = '󰋽 ',
+      [vim.diagnostic.severity.HINT] = '󰌶 ',
+    },
+  },
+}
