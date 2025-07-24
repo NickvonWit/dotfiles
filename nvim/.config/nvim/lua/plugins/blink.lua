@@ -73,8 +73,6 @@ return {
           enabled = true,
           group = 'MatchParen',
         },
-        priority = {},
-        ns = {},
       },
       debug = false,
     }
