@@ -36,6 +36,7 @@ return {
         },
         float = {
           preview_split = "right",
+          border = "rounded"
         },
       })
     end,
