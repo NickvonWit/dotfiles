@@ -159,7 +159,21 @@ end, { desc = "Goto next warning" })
 nnoremap("<leader>pw", function()
   vim.diagnostic.jump({ count = -1, float = true, severity = { min = vim.diagnostic.severity.WARN } })
 end, { desc = "Goto previous warning" })
-
+-- Toggle between virtual_text and lsp_lines
+nnoremap("<leader>ll", function()
+  local config = vim.diagnostic.config()
+  if config.virtual_lines then
+    vim.diagnostic.config({
+      virtual_text = true,
+      virtual_lines = false,
+    })
+  else
+    vim.diagnostic.config({
+      virtual_text = false,
+      virtual_lines = true,
+    })
+  end
+end, { desc = "Toggle LSP lines" })
 
 -- ==== Copilot ====
 nnoremap("<leader>ce", "<cmd>Copilot! attach<cr>", { desc = "[C]opilot [E]nable" })

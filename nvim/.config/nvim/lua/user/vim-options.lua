@@ -16,7 +16,7 @@ vim.opt.breakindent = true -- Indent wrapped lines
 -- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.numberwidth = 4    -- Set number column width
+vim.opt.numberwidth = 2    -- Set number column width
 vim.opt.signcolumn = "yes" -- Always show the signcolumn
 
 -- File handling
@@ -48,9 +48,9 @@ vim.opt.foldnestmax = 5
 vim.opt.foldtext = ""
 
 -- Quality of life improvements
-vim.opt.mouse = "a"        -- Enable mouse in all modes
-vim.opt.updatetime = 250   -- Reduce update time to make vim feel nicer
-vim.opt.colorcolumn = "80" -- Place bar to encourage good line length
+vim.opt.mouse = "a"      -- Enable mouse in all modes
+vim.opt.updatetime = 250 -- Reduce update time to make vim feel nicer
+-- vim.opt.colorcolumn = "80" -- Place bar to encourage good line length
 
 -- Clipboard
 vim.opt.clipboard = 'unnamedplus' -- Use system clipboard
@@ -73,7 +73,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.diagnostic.config {
   severity_sort = true,
   virtual_text = true,
-  virtual_lines = false,
+  virtual_lines = { current_line = true },
 
   float = { border = 'rounded', source = 'if_many' },
   underline = { severity = vim.diagnostic.severity.ERROR },
