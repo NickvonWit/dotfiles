@@ -4,6 +4,7 @@ return {
     '--clang-tidy',
     '--background-index',
     '--offset-encoding=utf-8',
+    '--fallback-style={IndentWidth: 2, TabWidth: 2, UseTab: Never}',
   },
 
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
@@ -11,7 +12,8 @@ return {
 
   root_markers = {
     'CMakeLists.txt',
-    'build/'
+    'build/',
+    'Makefile'
   },
 
   capabilities = {
