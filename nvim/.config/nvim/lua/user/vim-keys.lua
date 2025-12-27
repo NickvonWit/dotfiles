@@ -162,7 +162,7 @@ end, { desc = "Goto previous warning" })
 -- Toggle between virtual_text and lsp_lines
 nnoremap("<leader>ll", function()
   local config = vim.diagnostic.config()
-  if config.virtual_lines then
+  if config and config.virtual_lines then
     vim.diagnostic.config({
       virtual_text = true,
       virtual_lines = false,
