@@ -129,10 +129,15 @@ end, { desc = "Telescope: find all files" })
 local snacks = require("snacks")
 -- Git
 nnoremap("<leader>og", function() snacks.gitbrowse() end, { desc = "[O]pen [G]it" })
-nnoremap("<leader>gb", function() snacks.git.blame_line() end, { desc = "[G]it [B]lame" })
+
 -- Notifier
 nnoremap("<leader>nh", function() snacks.notifier.show_history() end, { desc = "Show [N]otifier [H]istory" })
 nnoremap("<leader>z", function() snacks.toggle.dim():toggle() end, { desc = " Toggle [Z]en mode" })
+
+-- ==== Git ====
+local gitsigns = require("gitsigns")
+nnoremap("<leader>gb", function() gitsigns.blame() end, { desc = "[G]it [B]lame" })
+nnoremap("<leader>gd", function() gitsigns.diffthis() end, { desc = "[G]it [D]iff" })
 
 -- ==== Mason/Lsp ====
 nnoremap("<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
