@@ -115,7 +115,7 @@ local telescope = require("telescope.builtin")
 
 nnoremap("<leader>fb", telescope.buffers, { desc = "Telescope: search buffers" })
 nnoremap("<leader>fg", telescope.live_grep, { desc = "Telescope: live grep" })
-nnoremap("<leader>fh", telescope.help_tags, { desc = "aelescope: help tags" })
+nnoremap("<leader>fh", telescope.help_tags, { desc = "Telescope: help tags" })
 nnoremap("<leader>ff", telescope.find_files, { desc = "Telescope: find files" })
 nnoremap("<leader>fa", function()
   telescope.find_files({
