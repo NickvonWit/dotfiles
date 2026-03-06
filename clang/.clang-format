@@ -20,19 +20,20 @@ BreakBeforeTernaryOperators: true
 
 CompactNamespaces: true
 FixNamespaceComments: true
+
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 IndentCaseLabels: true
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
-ReflowComments: true
+ReflowComments: false
 SortUsingDeclarations: false
 
 SpaceAfterCStyleCast: true
 SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
-SpaceBeforeCpp11BracedList: false
+SpaceBeforeCpp11BracedList: true
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeRangeBasedForLoopColon: true
