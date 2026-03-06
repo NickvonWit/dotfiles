@@ -178,7 +178,7 @@ nnoremap("<leader>ll", function()
       virtual_lines = true,
     })
   end
-end, { desc = "Toggle LSP lines" })
+end, { desc = "Toggle [L]SP [l]ines" })
 
 -- ==== Copilot ====
 nnoremap("<leader>ce", "<cmd>Copilot! attach<cr>", { desc = "[C]opilot [E]nable" })
