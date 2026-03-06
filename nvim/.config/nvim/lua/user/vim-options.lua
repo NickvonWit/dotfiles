@@ -6,9 +6,9 @@ vim.opt.termguicolors = true
 
 -- Indentation
 vim.opt.expandtab = true   -- Convert tabs to spaces
-vim.opt.tabstop = 2        -- Insert 2 spaces for a tab
-vim.opt.softtabstop = 2    -- Number of spaces tabs count for while editing
-vim.opt.shiftwidth = 2     -- Number of spaces for autoindent
+vim.opt.tabstop = 4        -- Insert 2 spaces for a tab
+vim.opt.softtabstop = 4    -- Number of spaces tabs count for while editing
+vim.opt.shiftwidth = 4     -- Number of spaces for autoindent
 vim.opt.smartindent = true -- Make indenting smart
 vim.opt.autoindent = true  -- Copy indent from current line when starting a new line
 vim.opt.breakindent = true -- Indent wrapped lines
