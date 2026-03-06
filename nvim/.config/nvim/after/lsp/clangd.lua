@@ -4,7 +4,7 @@ return {
     '--clang-tidy',
     '--background-index',
     '--offset-encoding=utf-8',
-    '--fallback-style={IndentWidth: 2, TabWidth: 2, UseTab: Never}',
+    '--fallback-style=Google',
   },
 
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
