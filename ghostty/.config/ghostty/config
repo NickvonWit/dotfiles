@@ -1,2 +1,4 @@
 theme = catppuccin-mocha.conf
 font-family = MesloLGS NF Regular
+
+shell-integration-features = ssh-env,ssh-terminfo
